@@ -19,7 +19,6 @@ body{
     line-height:1.6;
 }
 
-/* Color Theme */
 :root{
     --primary:#8b5cf6;
     --secondary:#06b6d4;
@@ -65,18 +64,11 @@ nav a:hover{
 
 /* Hero */
 .hero{
-    padding:80px 8%;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:40px;
+    padding:90px 8%;
+    text-align:center;
 }
 
-.hero-text{
-    flex:1;
-}
-
-.hero-text h2{
+.hero h2{
     font-size:42px;
     margin-bottom:20px;
     background:linear-gradient(90deg,var(--secondary),var(--primary));
@@ -84,29 +76,35 @@ nav a:hover{
     -webkit-text-fill-color:transparent;
 }
 
-.hero-text p{
+.hero p{
     color:#9ca3af;
+    max-width:700px;
+    margin:auto;
+}
+
+.hero .btn{
+    margin:15px 10px 0 10px;
 }
 
 /* Sections */
 section{
-    padding:60px 8%;
+    padding:70px 8%;
 }
 
 h2{
-    margin-bottom:20px;
+    margin-bottom:25px;
     color:var(--secondary);
 }
 
 .card-container{
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
     gap:20px;
 }
 
 .card{
     background:var(--card);
-    padding:20px;
+    padding:25px;
     border-radius:12px;
     transition:0.3s;
     border:1px solid rgba(255,255,255,0.05);
@@ -117,66 +115,55 @@ h2{
     box-shadow:0 0 20px rgba(139,92,246,0.4);
 }
 
-/* Button */
+/* Buttons */
 .btn{
     display:inline-block;
-    margin-top:20px;
     padding:10px 20px;
     background:linear-gradient(90deg,var(--primary),var(--secondary));
     color:white;
     text-decoration:none;
     border-radius:6px;
     transition:0.3s;
+    font-size:14px;
 }
 
 .btn:hover{
     opacity:0.8;
 }
 
+/* Contact Links */
+.contact-link{
+    color:var(--primary);
+    text-decoration:none;
+}
+
+.contact-link:hover{
+    color:var(--accent);
+    text-decoration:underline;
+}
+
 /* Footer */
 footer{
     text-align:center;
-    padding:20px;
+    padding:25px;
     background:#0f172a;
     color:#9ca3af;
 }
 
-/* ========================= */
-/* MOBILE RESPONSIVE SECTION */
-/* ========================= */
-
+/* Mobile */
 @media (max-width: 768px){
-
     header{
         flex-direction:column;
         align-items:flex-start;
         gap:10px;
     }
-
-    nav{
-        margin-top:10px;
-    }
-
     nav a{
         margin-left:0;
         margin-right:15px;
-        font-size:13px;
     }
-
-    .hero{
-        flex-direction:column-reverse;
-        text-align:center;
-        padding:60px 6%;
-    }
-
-    .hero-text h2{
+    .hero h2{
         font-size:28px;
     }
-
-    section{
-        padding:50px 6%;
-    }
-
 }
 </style>
 </head>
@@ -196,15 +183,15 @@ footer{
 
 <!-- HERO -->
 <section class="hero">
-    <div class="hero-text">
-        <h2>Aspiring Data Scientist & AI Enthusiast</h2>
-        <p>
-            Computer Science Engineering Student passionate about 
-            Machine Learning, Computer Vision, and building intelligent real-world systems.
-        </p>
-        <a href="#contact" class="btn">Let’s Connect</a>
-    </div>
+    <h2>Aspiring Data Scientist & AI Engineer</h2>
+    <p>
+        Computer Science Engineering student passionate about Machine Learning,
+        Computer Vision, and building intelligent real-world systems.
+        Actively seeking Data Science Internship opportunities (2026).
+    </p>
 
+    <a href="#contact" class="btn">Contact Me</a>
+    <a href="resume.pdf" class="btn" download>Download Resume</a>
 </section>
 
 <!-- ABOUT -->
@@ -212,30 +199,31 @@ footer{
     <h2>About Me</h2>
     <p>
         I am currently pursuing B.E in Computer Science (2022–2026).
-        I enjoy solving real-world problems using Python and AI.
-        My goal is to work on impactful AI systems in Data Science and Intelligent Automation.
+        I enjoy solving real-world problems using Python, Machine Learning,
+        and Computer Vision techniques. My goal is to work on scalable
+        AI-driven systems in Data Science and Intelligent Automation.
     </p>
 </section>
 
-<!-- TECHNICAL SKILLS (NOT REMOVED ✅) -->
+<!-- SKILLS -->
 <section id="skills">
     <h2>Technical Skills</h2>
     <div class="card-container">
         <div class="card">
             <h3>Programming</h3>
-            <p>Python (Beginner–Intermediate)<br>HTML & CSS</p>
+            <p>Python, HTML, CSS</p>
         </div>
         <div class="card">
             <h3>Libraries</h3>
-            <p>NumPy (Learning)<br>Pandas (Learning)<br>OpenCV</p>
+            <p>NumPy, Pandas, OpenCV</p>
+        </div>
+        <div class="card">
+            <h3>Concepts</h3>
+            <p>Machine Learning, Data Structures, Data Preprocessing</p>
         </div>
         <div class="card">
             <h3>Tools</h3>
-            <p>Jupyter Notebook<br>Google Colab<br>VS Code</p>
-        </div>
-        <div class="card">
-            <h3>Other</h3>
-            <p>Basic ML Concepts<br>Power BI (Basics)<br>MS Office</p>
+            <p>Jupyter Notebook, Google Colab, VS Code, Power BI</p>
         </div>
     </div>
 </section>
@@ -246,15 +234,15 @@ footer{
     <div class="card-container">
         <div class="card">
             <h3>Artificial Intelligence</h3>
-            <p>Designing smart systems that can detect, predict, and automate tasks.</p>
+            <p>Designing intelligent systems that detect, predict, and automate real-world tasks.</p>
         </div>
         <div class="card">
             <h3>Computer Vision</h3>
-            <p>Building solutions for image processing and intelligent surveillance.</p>
+            <p>Building image processing and surveillance-based AI systems.</p>
         </div>
         <div class="card">
             <h3>Future Goal</h3>
-            <p>I aim to become a Data Scientist or AI Engineer working on scalable intelligent systems.</p>
+            <p>To become a Data Scientist or AI Engineer working on scalable ML solutions.</p>
         </div>
     </div>
 </section>
@@ -263,50 +251,66 @@ footer{
 <section id="projects">
     <h2>Projects</h2>
     <div class="card-container">
+
         <div class="card">
             <h3>Face Swap Detection</h3>
-            <p>Used OpenCV to detect manipulated faces using landmark and lighting analysis.</p>
+            <p>
+                Developed a Computer Vision model using OpenCV to detect
+                face manipulation by analyzing facial landmarks and lighting inconsistencies.
+            </p>
+            <br>
+            <a href="https://github.com/prasannakumar9i" target="_blank" class="btn">View Code</a>
         </div>
+
         <div class="card">
             <h3>License Plate Detection</h3>
-            <p>Developed preprocessing and contour-based pipeline to extract vehicle plates.</p>
+            <p>
+                Built an automated detection pipeline using contour detection
+                and image preprocessing techniques to extract vehicle number plates.
+            </p>
+            <br>
+            <a href="https://github.com/prasannakumar9i" target="_blank" class="btn">View Code</a>
         </div>
+
     </div>
 </section>
 
-<!-- CONTACT -->
 <!-- CONTACT -->
 <section id="contact">
     <h2>Contact</h2>
 
     <p>
-        📧 Email: 
+        📧 Email:
         <a href="mailto:prasannak4941@gmail.com" class="contact-link">
             prasannak4941@gmail.com
         </a>
     </p>
 
     <p>
-        📞 Phone: 
+        📞 Phone:
         <a href="tel:+918217694677" class="contact-link">
             +91 8217694677
         </a>
     </p>
 
     <p>
-        🔗 LinkedIn: 
-        <a href="https://linkedin.com/in/prasanna-kumar-1124b33ab" 
-           target="_blank" 
-           class="contact-link">
-           View Profile
+        💻 GitHub:
+        <a href="https://github.com/prasannakumar9i" target="_blank" class="contact-link">
+            github.com/prasannakumar9i
+        </a>
+    </p>
+
+    <p>
+        🌐 Portfolio:
+        <a href="https://prasannakumar9i.github.io" target="_blank" class="contact-link">
+            prasannakumar9i.github.io
         </a>
     </p>
 </section>
 
 <footer>
-    © Updated 2026 Prasanna Kumar | Built with Passion 🚀
+© 2026 Prasanna Kumar | Built with HTML, CSS & Hosted on GitHub Pages
 </footer>
 
 </body>
 </html>
-
