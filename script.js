@@ -388,28 +388,76 @@ function createParticles() {
 
 /* ===== EVENT LISTENERS ===== */
 function setupEventListeners() {
-  const form = document.querySelector('.form form');
-  if (form) form.addEventListener('submit', handleContactForm);
+  // Use #contact form selector — more reliable than .form form
+  const form = document.querySelector('#contact form');
+  if (form) {
+    form.addEventListener('submit', handleContactForm);
+  } else {
+    // Retry once after DOM settles (handles render-timing edge cases)
+    setTimeout(() => {
+      const retryForm = document.querySelector('#contact form');
+      if (retryForm) retryForm.addEventListener('submit', handleContactForm);
+    }, 500);
+  }
 }
 
-function handleContactForm(e) {
+/**
+ * Submits the contact form via fetch() to Formspree — no page redirect.
+ * Shows spinner on button, then success / error toast.
+ */
+async function handleContactForm(e) {
+  e.preventDefault();
 
-  const inputs = e.target.querySelectorAll('.form-input');
+  const form   = e.target;
+  const inputs = form.querySelectorAll('.form-input');
+
+  // --- Validate: all fields must be filled ---
   let valid = true;
-
   inputs.forEach(input => {
-    if (!input.value.trim()) valid = false;
+    input.style.borderColor = '';          // reset previous red borders
+    if (!input.value.trim()) {
+      valid = false;
+      input.style.borderColor = '#cf222e'; // highlight empty fields red
+    }
   });
-
   if (!valid) {
-    e.preventDefault();
-    showToast("Please fill in all fields", "error");
+    showToast('Please fill in all fields.', 'error');
     return;
   }
 
-  showToast("Message sent successfully!", "success");
+  // --- Disable button + show spinner ---
+  const btn          = form.querySelector('button[type="submit"]');
+  const originalHTML = btn.innerHTML;
+  btn.disabled       = true;
+  btn.innerHTML      = '<i class="fas fa-spinner fa-spin"></i>&nbsp; Sending…';
+  btn.style.opacity  = '0.8';
 
+  try {
+    const response = await fetch(form.action, {
+      method:  'POST',
+      body:    new FormData(form),
+      headers: { 'Accept': 'application/json' }
+    });
+
+    if (response.ok) {
+      showToast("✅ Message sent! I'll get back to you soon.", 'success');
+      form.reset();
+      inputs.forEach(input => { input.style.borderColor = ''; });
+    } else {
+      const data = await response.json().catch(() => ({}));
+      const msg  = (data.errors && data.errors.map(err => err.message).join(', '))
+                   || 'Submission failed. Please try again.';
+      showToast('❌ ' + msg, 'error');
+    }
+  } catch (err) {
+    showToast('❌ Network error — please check your connection.', 'error');
+  } finally {
+    btn.disabled      = false;
+    btn.innerHTML     = originalHTML;
+    btn.style.opacity = '1';
+  }
 }
+
 /* ===== TOAST NOTIFICATIONS ===== */
 function showToast(msg, type = 'info') {
   const t = document.createElement('div');
@@ -444,68 +492,208 @@ function showToast(msg, type = 'info') {
    DYNAMIC RENDERERS
    ================================================ */
 
-/* --- Projects --- */
+/* ================================================
+   GITHUB AUTO-LOADER 🔥
+   Fetches repos from GitHub API and renders them.
+   Falls back to PORTFOLIO_DATA.projects if the API
+   is unavailable (rate-limit, offline, etc.).
+   ================================================ */
+
+const GITHUB_USERNAME = 'prasannakumar9i';
+
+// Map language names → Font Awesome icons
+const LANG_ICONS = {
+  Python:     'fab fa-python',
+  JavaScript: 'fab fa-js',
+  HTML:       'fab fa-html5',
+  CSS:        'fab fa-css3-alt',
+  TypeScript: 'fab fa-js-square',
+  Jupyter:    'fas fa-book-open',
+  Shell:      'fas fa-terminal',
+  default:    'fas fa-code'
+};
+
+// Repos to skip (forked demos, config repos, etc.)
+const SKIP_REPOS = ['.github', `${GITHUB_USERNAME}.github.io`];
+
+/* --- Skeleton loader cards shown while fetching --- */
+function showSkeletonCards(grid, count = 4) {
+  grid.innerHTML = '';
+  for (let i = 0; i < count; i++) {
+    const sk = document.createElement('div');
+    sk.className = 'project-card glass-effect skeleton-card';
+    sk.innerHTML = `
+      <div class="skeleton-image"></div>
+      <div class="project-content">
+        <div class="skeleton-line skeleton-title"></div>
+        <div class="skeleton-line"></div>
+        <div class="skeleton-line skeleton-short"></div>
+        <div class="skeleton-tags">
+          <div class="skeleton-tag"></div>
+          <div class="skeleton-tag"></div>
+          <div class="skeleton-tag"></div>
+        </div>
+      </div>`;
+    grid.appendChild(sk);
+  }
+}
+
+/* --- Build one styled project card from a GitHub repo --- */
+function buildGithubCard(repo) {
+  const lang     = repo.language || 'Code';
+  const langIcon = LANG_ICONS[lang] || LANG_ICONS.default;
+  const desc     = repo.description || 'A machine learning / AI project by Prasanna Kumar.';
+  const stars    = repo.stargazers_count || 0;
+  const forks    = repo.forks_count      || 0;
+  const updated  = new Date(repo.updated_at).toLocaleDateString('en-IN', { month: 'short', year: 'numeric' });
+  const topics   = (repo.topics && repo.topics.length)
+                     ? repo.topics.slice(0, 4)
+                     : [lang];
+
+  const card = document.createElement('div');
+  card.className = 'project-card glass-effect';
+  card.innerHTML = `
+    <div class="project-image">
+      <div class="project-placeholder"><i class="${langIcon}"></i></div>
+      <div class="project-overlay">
+        <div class="project-links">
+          <a href="${repo.html_url}" class="project-link" target="_blank" title="View on GitHub">
+            <i class="fab fa-github"></i>
+          </a>
+          ${repo.homepage
+            ? `<a href="${repo.homepage}" class="project-link" target="_blank" title="Live Demo">
+                <i class="fas fa-external-link-alt"></i>
+               </a>`
+            : ''}
+        </div>
+      </div>
+      <div class="repo-meta">
+        <span title="Stars"><i class="fas fa-star"></i> ${stars}</span>
+        <span title="Forks"><i class="fas fa-code-branch"></i> ${forks}</span>
+        <span title="Last updated"><i class="fas fa-clock"></i> ${updated}</span>
+      </div>
+    </div>
+    <div class="project-content">
+      <h3 class="project-title">${repo.name.replace(/_/g, ' ')}</h3>
+      <p class="project-description">${desc}</p>
+      <div class="project-tech">
+        ${topics.map(t => `<span class="tech-tag">${t}</span>`).join('')}
+      </div>
+    </div>`;
+  return card;
+}
+
+/* --- Main fetch function --- */
 async function renderProjects() {
-
-  const grid = document.querySelector(".projects-grid");
-
+  const grid = document.querySelector('.projects-grid');
   if (!grid) return;
 
-  grid.innerHTML = "";
+  // Show skeletons immediately
+  showSkeletonCards(grid, 4);
 
   try {
+    const res = await fetch(
+      `https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=updated&per_page=20`,
+      { headers: { 'Accept': 'application/vnd.github+json' } }
+    );
 
-    const res = await fetch("https://api.github.com/users/prasannakumar9i/repos");
+    if (!res.ok) throw new Error(`GitHub API error: ${res.status}`);
 
     const repos = await res.json();
 
-    repos
-      .sort((a,b)=> new Date(b.updated_at) - new Date(a.updated_at))
-      .slice(0,4)
-      .forEach(repo => {
+    // Filter: skip forks and blacklisted names, then take top 4 by update date
+    const filtered = repos
+      .filter(r => !r.fork && !SKIP_REPOS.includes(r.name))
+      .slice(0, 4);
 
-        const card = document.createElement("div");
+    if (!filtered.length) throw new Error('No repos found');
 
-        card.className = "project-card glass-effect";
+    grid.innerHTML = '';
 
-        card.innerHTML = `
-        <div class="project-image">
-          <div class="project-placeholder">
-            <i class="fab fa-github"></i>
-          </div>
-        </div>
+    // Add GitHub badge header
+    const badge = document.createElement('div');
+    badge.className = 'github-badge';
+    badge.innerHTML = `
+      <i class="fab fa-github"></i>
+      Live from GitHub · <a href="https://github.com/${GITHUB_USERNAME}" target="_blank">@${GITHUB_USERNAME}</a>
+      · Updates automatically`;
+    badge.style.cssText = `
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 0.6rem 1.2rem;
+      background: rgba(9,105,218,0.1);
+      border: 1px solid rgba(9,105,218,0.25);
+      border-radius: 8px;
+      font-size: 0.82rem;
+      color: #58a6ff;
+      margin-bottom: 0.5rem;
+    `;
+    badge.querySelector('a').style.cssText = 'color:#0969da;font-weight:700;';
+    grid.appendChild(badge);
 
-        <div class="project-content">
+    filtered.forEach((repo, i) => {
+      const card = buildGithubCard(repo);
+      card.style.animationDelay = `${i * 0.1}s`;
+      grid.appendChild(card);
+    });
 
-          <h3 class="project-title">${repo.name}</h3>
+    // Re-apply hover effects to new cards
+    initializeEnhancedHoverEffects();
 
-          <p class="project-description">
-            ${repo.description || "Machine Learning / Data Science project"}
-          </p>
-
-          <div class="project-tech">
-            <span class="tech-tag">GitHub Repo</span>
-          </div>
-
-          <br>
-
-          <a href="${repo.html_url}" target="_blank" class="btn-primary">
-            <i class="fab fa-github"></i> View Repository
-          </a>
-
-        </div>
-        `;
-
-        grid.appendChild(card);
-
-      });
-
-  } catch (error) {
-
-    console.error("GitHub projects failed to load", error);
-
+  } catch (err) {
+    console.warn('GitHub API unavailable — using fallback projects.', err.message);
+    renderFallbackProjects(grid);
   }
+}
 
+/* --- Fallback: render manual PORTFOLIO_DATA if GitHub API fails --- */
+function renderFallbackProjects(grid) {
+  grid.innerHTML = '';
+
+  // Offline notice
+  const notice = document.createElement('div');
+  notice.style.cssText = `
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 0.6rem 1.2rem;
+    background: rgba(249,115,22,0.1);
+    border: 1px solid rgba(249,115,22,0.25);
+    border-radius: 8px;
+    font-size: 0.82rem;
+    color: #fb923c;
+    margin-bottom: 0.5rem;
+  `;
+  notice.innerHTML = '<i class="fas fa-wifi"></i> GitHub API unavailable — showing saved projects';
+  grid.appendChild(notice);
+
+  PORTFOLIO_DATA.projects
+    .filter(p => p.featured)
+    .forEach(project => {
+      const card = document.createElement('div');
+      card.className = 'project-card glass-effect';
+      card.innerHTML = `
+        <div class="project-image">
+          <div class="project-placeholder"><i class="${project.image}"></i></div>
+          <div class="project-overlay">
+            <div class="project-links">
+              <a href="${project.links.live}"   class="project-link" target="_blank" title="Live Demo">
+                <i class="fas fa-external-link-alt"></i>
+              </a>
+              <a href="${project.links.github}" class="project-link" target="_blank" title="GitHub">
+                <i class="fab fa-github"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="project-content">
+          <h3 class="project-title">${project.title}</h3>
+          <p class="project-description">${project.description}</p>
+          <div class="project-tech">
+            ${project.tech.map(t => `<span class="tech-tag">${t}</span>`).join('')}
+          </div>
+        </div>`;
+      grid.appendChild(card);
+    });
 }
 
 /* --- Experience / Timeline --- */
