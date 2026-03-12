@@ -393,16 +393,23 @@ function setupEventListeners() {
 }
 
 function handleContactForm(e) {
-  // Note: form uses Formspree action, so this only validates locally
+
   const inputs = e.target.querySelectorAll('.form-input');
   let valid = true;
-  inputs.forEach(i => { if (!i.value.trim()) valid = false; });
+
+  inputs.forEach(input => {
+    if (!input.value.trim()) valid = false;
+  });
+
   if (!valid) {
     e.preventDefault();
-    showToast('Please fill in all fields', 'error');
+    showToast("Please fill in all fields", "error");
+    return;
   }
-}
 
+  showToast("Message sent successfully!", "success");
+
+}
 /* ===== TOAST NOTIFICATIONS ===== */
 function showToast(msg, type = 'info') {
   const t = document.createElement('div');
@@ -438,38 +445,67 @@ function showToast(msg, type = 'info') {
    ================================================ */
 
 /* --- Projects --- */
-function renderProjects() {
-  const grid = document.querySelector('.projects-grid');
+async function renderProjects() {
+
+  const grid = document.querySelector(".projects-grid");
+
   if (!grid) return;
-  grid.innerHTML = '';
-  PORTFOLIO_DATA.projects
-    .filter(p => p.featured)
-    .forEach(project => {
-      const card = document.createElement('div');
-      card.className = 'project-card glass-effect';
-      card.innerHTML = `
+
+  grid.innerHTML = "";
+
+  try {
+
+    const res = await fetch("https://api.github.com/users/prasannakumar9i/repos");
+
+    const repos = await res.json();
+
+    repos
+      .sort((a,b)=> new Date(b.updated_at) - new Date(a.updated_at))
+      .slice(0,4)
+      .forEach(repo => {
+
+        const card = document.createElement("div");
+
+        card.className = "project-card glass-effect";
+
+        card.innerHTML = `
         <div class="project-image">
-          <div class="project-placeholder"><i class="${project.image}"></i></div>
-          <div class="project-overlay">
-            <div class="project-links">
-              <a href="${project.links.live}"   class="project-link" target="_blank" title="Live Demo">
-                <i class="fas fa-external-link-alt"></i>
-              </a>
-              <a href="${project.links.github}" class="project-link" target="_blank" title="GitHub">
-                <i class="fab fa-github"></i>
-              </a>
-            </div>
+          <div class="project-placeholder">
+            <i class="fab fa-github"></i>
           </div>
         </div>
+
         <div class="project-content">
-          <h3 class="project-title">${project.title}</h3>
-          <p class="project-description">${project.description}</p>
+
+          <h3 class="project-title">${repo.name}</h3>
+
+          <p class="project-description">
+            ${repo.description || "Machine Learning / Data Science project"}
+          </p>
+
           <div class="project-tech">
-            ${project.tech.map(t => `<span class="tech-tag">${t}</span>`).join('')}
+            <span class="tech-tag">GitHub Repo</span>
           </div>
-        </div>`;
-      grid.appendChild(card);
-    });
+
+          <br>
+
+          <a href="${repo.html_url}" target="_blank" class="btn-primary">
+            <i class="fab fa-github"></i> View Repository
+          </a>
+
+        </div>
+        `;
+
+        grid.appendChild(card);
+
+      });
+
+  } catch (error) {
+
+    console.error("GitHub projects failed to load", error);
+
+  }
+
 }
 
 /* --- Experience / Timeline --- */
