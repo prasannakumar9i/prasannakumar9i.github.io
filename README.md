@@ -63,4 +63,5 @@ This repository contains the source code for my interactive personal portfolio w
 
 * **Email:** [prasannak4941@gmail.com](mailto:prasannak4941@gmail.com)
 * **Location:** Bengaluru, Karnataka, India
-* **Availability:** Open to Data Science & AI/ML Internships (2026)
+* **Availability:** * Open to Data Science & AI/ML Internships (2026)
+  * Actively seeking roles/projects in **Generative AI & LLM Development** (RAG, Fine-tuning, Agentic Workflows)
