@@ -136,7 +136,7 @@ const PORTFOLIO_DATA = {
         icon:     'fab fa-linkedin',
         url:      'https://linkedin.com/in/d-prasanna-kumar-nadagouda-54698b2a0', // <-- Add https:// here
         username: 'Prasanna Kumar'
-      }
+      },
       {
         id: 3, 
         name: 'Email',
