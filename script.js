@@ -119,8 +119,8 @@ const PORTFOLIO_DATA = {
       title:        'Aspiring Data Scientist & AI Engineer',
       email:        'prasannak4941@gmail.com',
       phone:        '+91 8217694677',
-      location:     'Bengaluru, Karnataka, India',   // ← fixed syntax
-      availability: 'Open to DS Internships (2026)'
+      location:     'Bengaluru, Karnataka, India',
+      availability: 'Open to DS / GenAI & LLM Internships (2026)'
     },
     social: [
       {
@@ -132,7 +132,7 @@ const PORTFOLIO_DATA = {
       {
         id: 2, name: 'LinkedIn',
         icon:     'fab fa-linkedin',
-        url:      'linkedin.com/in/d-prasanna-kumar-nadagouda-54698b2a0',
+        url:      'https://linkedin.com/in/d-prasanna-kumar-nadagouda-54698b2a0',
         username: 'Prasanna Kumar'
       },
       {
@@ -388,12 +388,10 @@ function createParticles() {
 
 /* ===== EVENT LISTENERS ===== */
 function setupEventListeners() {
-  // Use #contact form selector — more reliable than .form form
   const form = document.querySelector('#contact form');
   if (form) {
     form.addEventListener('submit', handleContactForm);
   } else {
-    // Retry once after DOM settles (handles render-timing edge cases)
     setTimeout(() => {
       const retryForm = document.querySelector('#contact form');
       if (retryForm) retryForm.addEventListener('submit', handleContactForm);
@@ -401,23 +399,18 @@ function setupEventListeners() {
   }
 }
 
-/**
- * Submits the contact form via fetch() to Formspree — no page redirect.
- * Shows spinner on button, then success / error toast.
- */
 async function handleContactForm(e) {
   e.preventDefault();
 
   const form   = e.target;
   const inputs = form.querySelectorAll('.form-input');
 
-  // --- Validate: all fields must be filled ---
   let valid = true;
   inputs.forEach(input => {
-    input.style.borderColor = '';          // reset previous red borders
+    input.style.borderColor = '';
     if (!input.value.trim()) {
       valid = false;
-      input.style.borderColor = '#cf222e'; // highlight empty fields red
+      input.style.borderColor = '#cf222e';
     }
   });
   if (!valid) {
@@ -425,7 +418,6 @@ async function handleContactForm(e) {
     return;
   }
 
-  // --- Disable button + show spinner ---
   const btn          = form.querySelector('button[type="submit"]');
   const originalHTML = btn.innerHTML;
   btn.disabled       = true;
@@ -492,16 +484,8 @@ function showToast(msg, type = 'info') {
    DYNAMIC RENDERERS
    ================================================ */
 
-/* ================================================
-   GITHUB AUTO-LOADER 🔥
-   Fetches repos from GitHub API and renders them.
-   Falls back to PORTFOLIO_DATA.projects if the API
-   is unavailable (rate-limit, offline, etc.).
-   ================================================ */
-
 const GITHUB_USERNAME = 'prasannakumar9i';
 
-// Map language names → Font Awesome icons
 const LANG_ICONS = {
   Python:     'fab fa-python',
   JavaScript: 'fab fa-js',
@@ -513,10 +497,8 @@ const LANG_ICONS = {
   default:    'fas fa-code'
 };
 
-// Repos to skip (forked demos, config repos, etc.)
 const SKIP_REPOS = ['.github', `${GITHUB_USERNAME}.github.io`];
 
-/* --- Skeleton loader cards shown while fetching --- */
 function showSkeletonCards(grid, count = 4) {
   grid.innerHTML = '';
   for (let i = 0; i < count; i++) {
@@ -538,7 +520,6 @@ function showSkeletonCards(grid, count = 4) {
   }
 }
 
-/* --- Build one styled project card from a GitHub repo --- */
 function buildGithubCard(repo) {
   const lang     = repo.language || 'Code';
   const langIcon = LANG_ICONS[lang] || LANG_ICONS.default;
@@ -583,12 +564,10 @@ function buildGithubCard(repo) {
   return card;
 }
 
-/* --- Main fetch function --- */
 async function renderProjects() {
   const grid = document.querySelector('.projects-grid');
   if (!grid) return;
 
-  // Show skeletons immediately
   showSkeletonCards(grid, 4);
 
   try {
@@ -601,7 +580,6 @@ async function renderProjects() {
 
     const repos = await res.json();
 
-    // Filter: skip forks and blacklisted names, then take top 4 by update date
     const filtered = repos
       .filter(r => !r.fork && !SKIP_REPOS.includes(r.name))
       .slice(0, 4);
@@ -610,7 +588,6 @@ async function renderProjects() {
 
     grid.innerHTML = '';
 
-    // Add GitHub badge header
     const badge = document.createElement('div');
     badge.className = 'github-badge';
     badge.innerHTML = `
@@ -637,7 +614,6 @@ async function renderProjects() {
       grid.appendChild(card);
     });
 
-    // Re-apply hover effects to new cards
     initializeEnhancedHoverEffects();
 
   } catch (err) {
@@ -646,11 +622,9 @@ async function renderProjects() {
   }
 }
 
-/* --- Fallback: render manual PORTFOLIO_DATA if GitHub API fails --- */
 function renderFallbackProjects(grid) {
   grid.innerHTML = '';
 
-  // Offline notice
   const notice = document.createElement('div');
   notice.style.cssText = `
     grid-column: 1 / -1;
@@ -696,7 +670,6 @@ function renderFallbackProjects(grid) {
     });
 }
 
-/* --- Experience / Timeline --- */
 function renderExperience() {
   const tl = document.querySelector('.timeline');
   if (!tl) return;
@@ -731,7 +704,6 @@ function renderExperience() {
   });
 }
 
-/* --- Skills --- */
 function renderSkills() {
   const grid = document.querySelector('.skills-grid');
   if (!grid) return;
@@ -751,7 +723,6 @@ function renderSkills() {
   });
 }
 
-/* --- Contact Info --- */
 function renderContactInfo() {
   const ci = document.querySelector('.contact-info');
   if (!ci) return;
@@ -777,7 +748,6 @@ function renderContactInfo() {
     ci.appendChild(d);
   });
 
-  // Social links row
   const sl = document.createElement('div');
   sl.className = 'social-links';
   social.forEach(link => {
