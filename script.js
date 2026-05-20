@@ -124,19 +124,22 @@ const PORTFOLIO_DATA = {
     },
     social: [
       {
-        id: 1, name: 'GitHub',
+        id: 1, 
+        name: 'GitHub',
         icon:     'fab fa-github',
         url:      'https://github.com/prasannakumar9i',
         username: '@prasannakumar9i'
       },
       {
-        id: 2, name: 'LinkedIn',
+        id: 2, 
+        name: 'LinkedIn',
         icon:     'fab fa-linkedin',
         url:      'https://linkedin.com/in/d-prasanna-kumar-nadagouda-54698b2a0', // <-- Add https:// here
         username: 'Prasanna Kumar'
       }
       {
-        id: 3, name: 'Email',
+        id: 3, 
+        name: 'Email',
         icon:     'fas fa-envelope',
         url:      'mailto:prasannak4941@gmail.com',
         username: 'prasannak4941'
