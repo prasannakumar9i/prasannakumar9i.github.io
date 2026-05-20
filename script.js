@@ -132,7 +132,7 @@ const PORTFOLIO_DATA = {
       {
         id: 2, name: 'LinkedIn',
         icon:     'fab fa-linkedin',
-        url:      'https://linkedin.com/in/prasanna-kumar-1124b33ab',
+        url:      'linkedin.com/in/d-prasanna-kumar-nadagouda-54698b2a0',
         username: 'Prasanna Kumar'
       },
       {
