@@ -713,7 +713,7 @@ function renderExperience() {
     el.innerHTML = `
       <div class="timeline-dot"><i class="${icon}"></i></div>
       <div class="timeline-content glass-effect">
-        <div class="timeline-date">${item.duration}</div>
+        <div class="timeline-date">${item.duration}</div>                                          
         <h3 class="timeline-title">${item.title}</h3>
         <h4 class="timeline-company">${item.company}</h4>
         ${item.location ? `<div class="timeline-location"><i class="fas fa-map-marker-alt"></i>${item.location}</div>` : ''}
