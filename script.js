@@ -82,10 +82,10 @@ const PORTFOLIO_DATA = {
       title: 'Data Science Intern',
       company: 'Vision Astra EV Academy',
       location: 'India',
-      duration: '2025 – Present',
+      duration:'Feb 2026 – May 2026',
       description: 'Working on real-world data analysis and machine learning tasks. Building predictive models for battery health and failure detection. Developing data preprocessing pipelines and collaborating on EV-related analytical projects using Python, XGBoost, and Streamlit.',
       skills: ['Python', 'Machine Learning', 'XGBoost', 'Pandas', 'NumPy', 'Streamlit', 'FastAPI', 'Data Analysis'],
-      current: true
+      current: false
     },
     {
       id: 2,
