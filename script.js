@@ -50,18 +50,29 @@ const PORTFOLIO_DATA = {
       },
       featured: true
     },
-    {
-      id: 4,
-      title: 'Hand Gesture Detection',
-      description: 'Real-time hand gesture recognition system achieving 90% classification accuracy using Python, OpenCV, and machine learning, designed for touchless human-computer interaction.',
-      image: 'fas fa-hand-paper',
-      tech: ['Python', 'OpenCV', 'Machine Learning', 'Real-time Processing'],
-      links: {
-        live:   '#',
-        github: 'https://github.com/prasannakumar9i'
-      },
-      featured: false
-    }
+   {
+  id: 3,
+  type: 'project',
+  title: 'EV AI DIAGNOSTIC PLATFORM ',
+  company: 'Self-Directed AI Systems Engineering',
+  location: 'Remote',
+  duration: '2025 – Present',
+  description: 'Building an advanced multimodal EV AI assistant capable of telemetry reasoning, conversational diagnostics, RAG-based retrieval, image understanding using LLaVA, EV failure prediction, and educational AI assistance for mechanics, students, and researchers.',
+  skills: [
+    'Python',
+    'Flask',
+    'React',
+    'Ollama',
+    'LLaVA',
+    'RAG',
+    'ChromaDB',
+    'AI Systems',
+    'Computer Vision',
+    'LLMs',
+    'Multimodal AI'
+  ],
+  featured: true
+}
   ],
 
   experience: [
@@ -87,17 +98,29 @@ const PORTFOLIO_DATA = {
       skills: ['Data Structures', 'Algorithms', 'Database Systems', 'OS', 'Software Engineering', 'Python'],
       current: false
     },
-    {
-      id: 3,
-      type: 'project',
-      title: 'Hand Gesture Detection (Personal Project)',
-      company: 'Self-Directed Development',
-      location: 'Remote',
-      duration: '2024 – 2025',
-      description: 'Developed a real-time hand gesture recognition system using Python, OpenCV, and ML. Implemented machine learning algorithms to classify hand gestures with 90% accuracy, suitable for HCI applications.',
-      skills: ['Python', 'OpenCV', 'Machine Learning', 'Computer Vision', 'Data Analysis'],
-      current: false
-    }
+ {
+  id: 3,
+  type: 'project',
+  title: 'EV AI DIAGNOSTIC PLATFORM',
+  company: 'Self-Directed AI Systems Engineering',
+  location: 'Remote',
+  duration: '2025 – Present',
+  description: 'Building an advanced multimodal EV AI assistant capable of telemetry reasoning, conversational diagnostics, RAG-based retrieval, image understanding using LLaVA, EV failure prediction, and educational AI assistance for mechanics, students, and researchers.',
+  skills: [
+    'Python',
+    'Flask',
+    'React',
+    'Ollama',
+    'LLaVA',
+    'RAG',
+    'ChromaDB',
+    'AI Systems',
+    'Computer Vision',
+    'LLMs',
+    'Multimodal AI'
+  ],
+  current: true
+}
   ],
 
   skills: [
