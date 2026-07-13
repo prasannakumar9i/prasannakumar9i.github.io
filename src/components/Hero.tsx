@@ -59,11 +59,11 @@ export default function Hero() {
   };
 
   return (
-    <section className="relative min-h-[92vh] flex items-center justify-center overflow-hidden py-12 px-4 sm:px-6 lg:px-8 font-sans cyber-grid">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden py-12 px-4 sm:px-6 lg:px-8 font-sans cyber-grid">
       {/* 3D background */}
       <NeuralNetwork />
 
-      <div className="relative z-10 max-w-4xl mx-auto text-center space-y-6 md:space-y-8">
+      <div className="relative z-10 max-w-4xl mx-auto text-center space-y-6 lg:space-y-8">
         {/* Futuristic Badge */}
         <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-neon-blue/10 border border-neon-blue/20 text-neon-blue animate-pulse">
           <Sparkles className="w-3.5 h-3.5" />
@@ -122,7 +122,7 @@ export default function Hero() {
             <Github className="w-4.5 h-4.5" />
           </a>
           <a
-            href="https://www.linkedin.com/in/placeholder-profile"
+            href="https://www.linkedin.com/in/d-prasanna-kumar-nadagouda-54698b2a0"
             target="_blank"
             rel="noopener noreferrer"
             className="p-2.5 rounded-xl bg-white/5 border border-white/5 hover:border-neon-blue/20 hover:text-white transition-all transform hover:scale-110"
@@ -130,12 +130,15 @@ export default function Hero() {
           >
             <Linkedin className="w-4.5 h-4.5" />
           </a>
-          <div
-            className="p-2.5 rounded-xl bg-white/5 border border-white/5 text-gray-600 cursor-not-allowed"
-            title="Email placeholder"
+          <a
+            href="mailto:prasannak4941@gmail.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="p-2.5 rounded-xl bg-white/5 border border-white/5 hover:border-neon-blue/20 hover:text-white transition-all transform hover:scale-110"
+            title="Email"
           >
             <Mail className="w-4.5 h-4.5" />
-          </div>
+          </a>
         </div>
       </div>
 

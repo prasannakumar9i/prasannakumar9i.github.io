@@ -1,11 +1,15 @@
 import { useState, useEffect } from "react";
 import { Github, GitPullRequest, GitFork, Users, Star, Award, Milestone } from "lucide-react";
 
-import { setGitHubUsername } from "../services/github";
+import { fetchGitHubProfile, setGitHubUsername } from "../services/github";
 
-setGitHubUsername(username);
-import { fetchGitHubProfile } from "../services/github";
-export default function GitHubStats() {
+interface GitHubStatsProps {
+  username: string;
+}
+
+export default function GitHubStats({ username }: GitHubStatsProps) {
+  setGitHubUsername(username);
+
   const [hoveredDay, setHoveredDay] = useState<{ count: number; date: string } | null>(null);
   const [profile, setProfile] = useState<any>(null);
 
@@ -13,8 +17,6 @@ export default function GitHubStats() {
     async function loadProfile() {
       try {
         const data = await fetchGitHubProfile();
-        alert(JSON.stringify(data));
-        console.log("GitHub Profile:", data); // temporary debug
         setProfile(data);
       } catch (error) {
         console.error("GitHub API Error:", error);

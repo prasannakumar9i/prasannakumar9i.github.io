@@ -135,3 +135,102 @@ body {
     linear-gradient(rgba(0, 0, 0, 0.02) 1px, transparent 1px),
     linear-gradient(90deg, rgba(0, 0, 0, 0.02) 1px, transparent 1px);
 }
+
+/* ===========================================================
+   GLOBAL RESPONSIVE IMPROVEMENTS
+=========================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+#root {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+img,
+video,
+canvas,
+svg {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+a {
+  word-break: break-word;
+}
+
+pre,
+code {
+  overflow-x: auto;
+}
+
+/* Better scrolling on phones */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+
+  html {
+    font-size: 15px;
+  }
+
+  section {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+
+  h1 {
+    line-height: 1.15;
+  }
+
+  h2 {
+    line-height: 1.2;
+  }
+
+  .glass-panel {
+    border-radius: 1rem;
+  }
+}
+
+/* Tablet */
+@media (min-width:641px) and (max-width:1024px) {
+
+  html {
+    font-size: 15.5px;
+  }
+
+}
+
+/* Large Desktop */
+@media (min-width:1600px) {
+
+  html {
+    font-size: 17px;
+  }
+
+}

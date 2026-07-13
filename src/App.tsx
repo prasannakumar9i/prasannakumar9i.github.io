@@ -14,11 +14,7 @@ import WelcomeGateway from "./components/WelcomeGateway";
 import { ArrowUp, Terminal, Cpu, X } from "lucide-react";
 import { Project } from "./types";
 
-interface GitHubStatsProps {
-  username: string;
-}
-
-export default function GitHubStats({ username }: GitHubStatsProps) {  
+ export default function App() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(true);
   const [scrollProgress, setScrollProgress] = useState(0);

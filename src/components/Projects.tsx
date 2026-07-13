@@ -1,16 +1,23 @@
-import {  useState } from "react";
-import {
-  fetchGitHubRepositories,
-  FEATURED_REPOS,
-} from "../services/github";
+import { useState, useEffect } from "react";
+import {fetchGitHubRepositories} from "../services/github";
 import HologramCube from "./HologramCube";
 import { FolderGit2, Github, ExternalLink, Search, Filter } from "lucide-react";
 import { Project } from "../types";
 
 export default function Projects({ visitorType }: { visitorType?: "recruiter" | "student" | "developer" | "explorer" | null }) {
   const [searchTerm, setSearchTerm] = useState("");
-  
+  const [repoData, setRepoData] = useState<any[]>([]);
+  const [activeCategory, setActiveCategory] = useState("Featured");
+  const categories = [
+    "Featured",
+    "AI/ML",
+    "NLP",
+    "Automation",
+    "Web",
+    "All Repositories",
+  ];
   const projects: Project[] = [
+    
     {
       id: "ev-diagnostic",
       title: "EV AI Diagnostic Platform",
@@ -42,10 +49,52 @@ export default function Projects({ visitorType }: { visitorType?: "recruiter" | 
     }
   ];
 
-  const filteredProjects = projects.filter((p) => {
-    return p.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-           p.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-           p.tags.some(t => t.toLowerCase().includes(searchTerm.toLowerCase()));
+    useEffect(() => {
+    async function loadRepos() {
+      try {
+        const repos = await fetchGitHubRepositories();
+        setRepoData(repos);
+      } catch (error) {
+        console.error("GitHub Repo Error:", error);
+      }
+    }
+
+    loadRepos();
+  }, []);
+
+    const filteredProjects = projects.filter((p) => {
+    const matchesSearch =
+      p.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      p.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      p.tags.some((t) =>
+        t.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+
+    if (!matchesSearch) return false;
+
+    switch (activeCategory) {
+      case "Featured":
+        return true;
+
+      case "AI/ML":
+        return p.category === "ai-ml" || p.category === "nlp-rag";
+
+      case "Automation":
+        return p.tags.some(tag =>
+          tag.toLowerCase().includes("automation")
+        );
+
+      case "Web":
+        return p.tags.some(tag =>
+          ["react","typescript","javascript","html","css","vite","flask"].includes(tag.toLowerCase())
+        );
+
+      case "All Repositories":
+        return false;
+
+      default:
+        return true;
+    }
   });
 
   return (
@@ -76,12 +125,39 @@ export default function Projects({ visitorType }: { visitorType?: "recruiter" | 
                 className="w-full px-3 py-2 pl-9 rounded-xl bg-white/5 border border-white/10 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-neon-blue/30 focus:shadow-[0_0_10px_rgba(0,240,255,0.05)] transition-all"
               />
             </div>
+           <div className="flex flex-wrap justify-center gap-2 mb-8">
+              {categories.map((category) => (
+                <button
+                  key={category}
+                  onClick={() => setActiveCategory(category)}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-300
+                  ${
+                    activeCategory === category
+                      ? "bg-zinc-900 text-white border border-zinc-700"
+                      : "bg-transparent text-gray-500 hover:text-white hover:border-zinc-700 border border-transparent"
+                  }`}
+                >
+                  {category}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
 
             {/* 3D Projects Grid */}
+        {activeCategory !== "All Repositories" ? (
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
           {filteredProjects.map((p) => {
+
+            const repo =
+              repoData.find(
+                (r: any) =>
+                  (p.id === "ev-diagnostic" &&
+                    r.name === "EV_AI_Diagnostic_Platform") ||
+                  (p.id === "resume-screener" &&
+                    r.name === "rooman-resume-screening-agent")
+              );
             // Personalize highlight based on visitor type
             let isProjectHighlighted = false;
             let projectHighlightTag = "";
@@ -152,10 +228,21 @@ export default function Projects({ visitorType }: { visitorType?: "recruiter" | 
                   ))}
                 </div>
 
+                {repo && (
+                <div className="flex items-center gap-4 pt-2 text-[10px] font-mono text-gray-400">
+                    <span>⭐ {repo.stargazers_count}</span>
+                    <span>🍴 {repo.forks_count}</span>
+                    <span>💻 {repo.language || "Unknown"}</span>
+                     <span>
+                        📅 {new Date(repo.updated_at).toLocaleDateString()}
+                     </span>
+                </div>
+                )}
+
                 {/* Actions container */}
                 <div className="flex items-center gap-2 pt-4 border-t border-white/5 mt-auto">
                   <a
-                    href={p.githubUrl}
+                    href={repo?.html_url ?? p.githubUrl}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex-1 py-2.5 px-3 rounded-xl border border-white/5 hover:border-white/20 hover:bg-white/5 text-[10px] font-mono font-medium text-gray-300 hover:text-white transition-all flex items-center justify-center gap-1.5"
@@ -178,16 +265,67 @@ export default function Projects({ visitorType }: { visitorType?: "recruiter" | 
           );
         })}
 
-          {filteredProjects.length === 0 && (
-            <div className="col-span-full py-16 text-center text-gray-500 font-mono space-y-2">
-              <p className="text-xs">Zero system entries found matching criteria.</p>
-              <button onClick={() => setSearchTerm("")} className="text-[10px] text-neon-blue underline cursor-pointer">
-                Reset search queries
-              </button>
+      {filteredProjects.length === 0 && (
+              <div className="col-span-full py-16 text-center text-gray-500 font-mono space-y-2">
+                <p className="text-xs">Zero system entries found matching criteria.</p>
+                <button
+                  onClick={() => setSearchTerm("")}
+                  className="text-[10px] text-neon-blue underline cursor-pointer"
+                >
+                  Reset search queries
+                </button>
+              </div>
+            )}
+
             </div>
+
+            ) : (
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
+
+            {repoData.map((repo) => (
+
+              <div
+                key={repo.id}
+                className="glass-panel rounded-2xl border border-white/10 p-6 hover:border-neon-blue/30 transition-all"
+              >
+
+                <h3 className="text-lg font-bold text-white">
+                  {repo.name}
+                </h3>
+
+                <p className="text-sm text-gray-400 mt-2 min-h-[48px]">
+                  {repo.description || "No description available"}
+                </p>
+
+                <div className="flex gap-4 mt-4 text-xs text-gray-400">
+
+                  <span>⭐ {repo.stargazers_count}</span>
+
+                  <span>🍴 {repo.forks_count}</span>
+
+                  <span>{repo.language || "Unknown"}</span>
+
+                </div>
+
+                <a
+                  href={repo.html_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex mt-5 text-neon-blue hover:underline"
+                >
+                  View Repository →
+                </a>
+
+              </div>
+
+            ))}
+
+          </div>
+
           )}
+
         </div>
-      </div>
     </section>
   );
 }

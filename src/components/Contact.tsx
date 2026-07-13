@@ -7,7 +7,7 @@ export default function Contact() {
   const [message, setMessage] = useState("");
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (!name || !email || !message) {
       setStatus("error");
@@ -15,16 +15,38 @@ export default function Contact() {
       return;
     }
 
-    setStatus("sending");
+   setStatus("sending");
 
-    // Simulate futuristic transmit sequence
-    setTimeout(() => {
-      setStatus("success");
-      setName("");
-      setEmail("");
-      setMessage("");
-      setTimeout(() => setStatus("idle"), 4000);
-    }, 2000);
+try {
+  const response = await fetch("https://api.web3forms.com/submit", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      access_key: import.meta.env.VITE_WEB3FORMS_ACCESS_KEY,
+      name,
+      email,
+      message,
+      subject: "Portfolio Contact",
+    }),
+  });
+
+  const result = await response.json();
+
+  if (result.success) {
+    setStatus("success");
+    setName("");
+    setEmail("");
+    setMessage("");
+  } else {
+    setStatus("error");
+  }
+} catch {
+  setStatus("error");
+}
+
+setTimeout(() => setStatus("idle"), 4000);
   };
 
   return (
@@ -59,11 +81,11 @@ export default function Contact() {
               <div className="space-y-4 font-mono text-xs text-gray-300 pt-2">
                 <div className="flex items-center gap-3 p-2.5 rounded-xl bg-white/5 border border-white/5">
                   <Mail className="w-4.5 h-4.5 text-neon-blue" />
-                  <span>email-placeholder@example.com</span>
+                  <span>email-prasannak4941@gmail.com</span>
                 </div>
                 <div className="flex items-center gap-3 p-2.5 rounded-xl bg-white/5 border border-white/5">
                   <Cpu className="w-4.5 h-4.5 text-neon-purple" />
-                  <span>Phone: +91-XXXXX-XXXXX</span>
+                  <span>Phone: +91-8217694677</span>
                 </div>
                 <div className="flex items-center gap-3 p-2.5 rounded-xl bg-white/5 border border-white/5">
                   <Cpu className="w-4.5 h-4.5 text-neon-cyan" />
@@ -86,7 +108,7 @@ export default function Contact() {
                   GitHub
                 </a>
                 <a
-                  href="https://www.linkedin.com/in/placeholder-profile"
+                  href="https://www.linkedin.com/in/d-prasanna-kumar-nadagouda-54698b2a0"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-2 p-3 rounded-xl bg-white/5 border border-white/5 hover:border-neon-purple/20 hover:text-white transition-all"
