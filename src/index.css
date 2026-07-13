@@ -1,0 +1,137 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Space Grotesk", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+
+  --color-neon-blue: #00f0ff;
+  --color-neon-cyan: #00ffd8;
+  --color-neon-purple: #bd00ff;
+  --color-cyber-dark: #0a0b10;
+  --color-cyber-card: rgba(16, 17, 26, 0.4);
+}
+
+/* Custom Webkit scrollbar for premium feel */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0a0b10;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(189, 0, 255, 0.15);
+  border-radius: 999px;
+  border: 1px solid rgba(0, 240, 255, 0.1);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 240, 255, 0.3);
+}
+
+/* Glowing text effects */
+.glow-text-cyan {
+  text-shadow: 0 0 10px rgba(0, 240, 255, 0.5), 0 0 20px rgba(0, 240, 255, 0.2);
+}
+
+.glow-text-purple {
+  text-shadow: 0 0 10px rgba(189, 0, 255, 0.5), 0 0 20px rgba(189, 0, 255, 0.2);
+}
+
+/* Smooth Scrolling */
+html {
+  scroll-behavior: smooth;
+  background-color: #0a0b10;
+  color: #f3f4f6;
+  font-family: var(--font-sans);
+}
+
+body {
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+/* Glowing borders */
+.glow-border {
+  position: relative;
+}
+
+.glow-border::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(to bottom right, rgba(0, 240, 255, 0.3), rgba(189, 0, 255, 0.3));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.glow-border-hover:hover::after {
+  background: linear-gradient(to bottom right, #00f0ff, #bd00ff);
+  transition: background 0.3s ease;
+}
+
+/* Glassmorphism utility */
+.glass-panel {
+  background: rgba(16, 17, 26, 0.5);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.glass-panel-light {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Light mode overrides */
+.light-mode-theme {
+  --color-cyber-dark: #f8fafc;
+  --color-cyber-card: rgba(255, 255, 255, 0.7);
+  color: #0f172a;
+}
+
+.light-mode-theme .glass-panel {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.light-mode-theme .glass-panel-light {
+  background: rgba(0, 0, 0, 0.02);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+/* Typing cursor animation */
+@keyframes blink {
+  50% { border-color: transparent; }
+}
+
+.typing-cursor {
+  border-right: 2px solid #00f0ff;
+  animation: blink 0.75s step-end infinite;
+}
+
+/* Cyber grid background */
+.cyber-grid {
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+.light-mode-theme .cyber-grid {
+  background-image: 
+    linear-gradient(rgba(0, 0, 0, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.02) 1px, transparent 1px);
+}
