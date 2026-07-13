@@ -15,6 +15,7 @@ export default function Hero() {
   const [subWord, setSubWord] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
   const [typingSpeed, setTypingSpeed] = useState(150);
+  const [loaded, setLoaded] = useState(false);
 
   // Typewriter effect
   useEffect(() => {
@@ -51,6 +52,14 @@ export default function Hero() {
     return () => clearTimeout(timer);
   }, [subWord, isDeleting, wordIdx]);
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoaded(true);
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   const handleScrollTo = (id: string) => {
     const element = document.getElementById(id);
     if (element) {
@@ -59,7 +68,13 @@ export default function Hero() {
   };
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden py-12 px-4 sm:px-6 lg:px-8 font-sans cyber-grid">
+    <section
+      className={`relative min-h-[92vh] flex items-center justify-center overflow-hidden py-12 px-4 sm:px-6 lg:px-8 font-sans cyber-grid transition-all duration-1000 ease-out ${
+        loaded
+          ? "opacity-100 translate-y-0"
+          : "opacity-0 translate-y-10"
+      }`}
+    >
       {/* 3D background */}
       <NeuralNetwork />
 

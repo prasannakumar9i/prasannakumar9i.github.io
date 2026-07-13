@@ -23,14 +23,14 @@ export default function HologramCube() {
 
     // 8 vertices of a cube
     const vertices: Vertice[] = [
-      { x: -50, y: -50, z: -50 },
-      { x: 50, y: -50, z: -50 },
-      { x: 50, y: 50, z: -50 },
-      { x: -50, y: 50, z: -50 },
-      { x: -50, y: -50, z: 50 },
-      { x: 50, y: -50, z: 50 },
-      { x: 50, y: 50, z: 50 },
-      { x: -50, y: 50, z: 50 },
+      { x: -70, y: -70, z: -70 },
+      { x: 70, y: -70, z: -70 },
+      { x: 70, y: 70, z: -70 },
+      { x: -70, y: 70, z: -70 },
+      { x: -70, y: -70, z: 70 },
+      { x: 70, y: -70, z: 70 },
+      { x: 70, y: 70, z: 70 },
+      { x: -70, y: 70, z: 70 },
     ];
 
     // 12 edges connecting the vertices
@@ -43,7 +43,7 @@ export default function HologramCube() {
     let angleX = 0;
     let angleY = 0;
     let angleZ = 0;
-    const fov = 200;
+    const fov = 260;
 
     const handleMouseEnter = () => {
       mouseHover.current = true;
@@ -100,9 +100,9 @@ export default function HologramCube() {
       });
 
       // Draw edges
-      ctx.lineWidth = 1.2;
+      ctx.lineWidth = 2;
       ctx.strokeStyle = "rgba(0, 240, 255, 0.4)";
-      ctx.shadowBlur = mouseHover.current ? 8 : 2;
+      ctx.shadowBlur = mouseHover.current ? 22 : 12;
       ctx.shadowColor = "#00f0ff";
 
       edges.forEach(([u, v]) => {
@@ -127,7 +127,7 @@ export default function HologramCube() {
         const alpha = Math.max(0.2, 1 - (p.sz + 100) / 200);
         ctx.fillStyle = `rgba(189, 0, 255, ${alpha})`;
         ctx.beginPath();
-        ctx.arc(p.sx, p.sy, p.scale * 3, 0, Math.PI * 2);
+        ctx.arc(p.sx, p.sy, p.scale * 5, 0, Math.PI * 2);
         ctx.fill();
       });
 
@@ -142,7 +142,7 @@ export default function HologramCube() {
       ctx.shadowColor = "#00ffd8";
       ctx.fillStyle = "rgba(0, 255, 216, 0.8)";
       ctx.beginPath();
-      ctx.arc(csx, csy, coreScale * 4, 0, Math.PI * 2);
+      ctx.arc(csx, csy, coreScale * 7, 0, Math.PI * 2);
       ctx.fill();
 
       ctx.shadowBlur = 0;
@@ -161,7 +161,10 @@ export default function HologramCube() {
 
   return (
     <div className="w-full h-full flex items-center justify-center">
-      <canvas ref={canvasRef} className="w-[140px] h-[140px] cursor-pointer" />
+      <canvas
+        ref={canvasRef}
+        className="w-[210px] h-[210px] cursor-pointer transition-transform duration-500"
+      />
     </div>
   );
 }

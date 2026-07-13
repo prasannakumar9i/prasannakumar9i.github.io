@@ -36,12 +36,12 @@ export default function ResumeDownload() {
     if (downloadState === "validating") {
       const timer = setTimeout(() => {
         setDownloadState("complete");
-        // Trigger simulated file download
         const link = document.createElement("a");
-        link.href = "#";
-        link.setAttribute("download", "Prasanna_Kumar_AI_Engineer_Resume.pdf");
+        link.href = "/resume/PK_RESUME.pdf"; // <-- change this
+        link.download = "PK_RESUME.pdf";
+
         document.body.appendChild(link);
-        // We'll simulate a file by triggering a alert or download action
+        link.click();
         document.body.removeChild(link);
       }, 1200);
       return () => clearTimeout(timer);
