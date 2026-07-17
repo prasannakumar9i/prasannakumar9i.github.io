@@ -9,7 +9,6 @@ import GitHubStats from "./components/GitHubStats";
 import Education from "./components/Education";
 import Contact from "./components/Contact";
 import CommandPalette from "./components/CommandPalette";
-import AiChatbot from "./components/AiChatbot";
 import WelcomeGateway from "./components/WelcomeGateway";
 import { ArrowUp, Terminal, Cpu, X } from "lucide-react";
 import { Project } from "./types";
@@ -197,9 +196,7 @@ import { Project } from "./types";
         </div>
       </footer>
 
-      {/* Interactive AI Chatbot Widget */}
-      <AiChatbot />
-
+  
       {/* Command Palette dialog (Ctrl+K) */}
       <CommandPalette
         isOpen={isSearchOpen}
