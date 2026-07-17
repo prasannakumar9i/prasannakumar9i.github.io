@@ -6,7 +6,7 @@ import { defineConfig } from "vite";
 export default defineConfig({
   plugins: [react(), tailwindcss()],
 
-  base: "/prasannakumar9i.github.io/", // IMPORTANT for username.github.io repositories
+  base: "/", // IMPORTANT for username.github.io repositories
 
   resolve: {
     alias: {
